@@ -1,4 +1,4 @@
-from .render_animations import FactorioUtils_RenderAnimations, FactorioUtils_RenderOneAnimation
+from .render_animations import FactorioUtils_RenderAnimations, FactorioUtils_RenderOneAnimation, FactorioUtils_CancelRenderingAnimation
 from .setup_scene import FactorioUtils_SetupScene
 from .create_shadow_catcher import FactorioUtils_CreateShadowCatcher
 from .create_checker_grid import FactorioUtils_CreateCheckerGrid

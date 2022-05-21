@@ -57,6 +57,12 @@ class FactorioUtils_SceneProps(bpy.types.PropertyGroup):
         default=2.0,
     )
 
+    should_cancel_rendering: bpy.props.BoolProperty(
+        name="Should cancel rendering",
+        description="Flag to stop rendering spritesheets",
+        default=False,
+    )
+
 @CLSManager.reg_prop_group(bpy.types.ViewLayer, "factorio")
 class FactorioUtils_ViewLayerProps(bpy.types.PropertyGroup):
     output_path: bpy.props.StringProperty(
@@ -107,6 +113,10 @@ class FACTORIOUTILS_PT_SidePanel(bpy.types.Panel):
         progress_bars.render_progress.draw(context, col)
         if not progress_bars.render_progress.progress:
             col.operator(operators.FactorioUtils_RenderAnimations.bl_idname, text=f"Render object animations", icon="OUTPUT")
+        else:
+            col.operator(
+                operators.FactorioUtils_CancelRenderingAnimation.bl_idname,
+                text="Cancel rendering", icon="CANCEL")
 
 @CLSManager.reg_bpy_class
 class FACTORIOUTILS_PT_ActionSidePanel(bpy.types.Panel):
@@ -127,3 +137,7 @@ class FACTORIOUTILS_PT_ActionSidePanel(bpy.types.Panel):
             active_nla_track = operators.FactorioUtils_RenderOneAnimation.get_active_nla_track(context)
             if active_nla_track is not None:
                 col.operator(operators.FactorioUtils_RenderOneAnimation.bl_idname, text=f"Render \"{active_nla_track.name}\" animation", icon="OUTPUT")
+        else:
+            col.operator(
+                operators.FactorioUtils_CancelRenderingAnimation.bl_idname,
+                text="Cancel rendering", icon="CANCEL")

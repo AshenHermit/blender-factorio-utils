@@ -48,7 +48,7 @@ class ProgressAgent():
         if value == 100.0: value = 0.0
         self.progress = value
         self.label = label
-        if self.context is not None: self.context.area.tag_redraw()
+        # if self.context is not None: self.context.area.tag_redraw()
         
     def register(self):
         setattr(bpy.types.Scene, self.prop_id, 

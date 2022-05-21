@@ -1,4 +1,4 @@
-# Factorio Utils v0.6
+# Factorio Utils v0.7
 
 A small addon for *Blender* that simplifies the creation of graphics for the game *Factorio*.
 
@@ -58,4 +58,3 @@ just screenshot
 
 ## Ideas
 * Maybe should be added the ablility to define *boxes* properties like *"collision_box"*, *"selection_box"*, *"drawing_box"*, by changing sizes of some planes. That would be cool.
-* The ablility to stop rendering spritesheet.

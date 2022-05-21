@@ -20,6 +20,15 @@ from .. import progress_bars
 from ..props_getters import props_manager
 
 @CLSManager.reg_bpy_class
+class FactorioUtils_CancelRenderingAnimation(bpy.types.Operator):
+    bl_idname = f"factorio.cancel_rendering_animation"
+    bl_label = "Factorio Utils: Cancel rendering animations"
+    
+    def execute(self, context):
+        context.scene.factorio.should_cancel_rendering = True
+        return {"FINISHED"}
+
+@CLSManager.reg_bpy_class
 class FactorioUtils_RenderAnimations(MenuOperator):
     bl_idname = f"factorio.render_animations"
     bl_label = "Factorio Utils: Render all animations of active object"
@@ -32,7 +41,11 @@ class FactorioUtils_RenderAnimations(MenuOperator):
         self.current_nla_track_idx = 0
 
     def modal(self, context, event):
-        if event.type != "TIMER": return {'RUNNING_MODAL'}
+        if event.type != "TIMER": return {'PASS_THROUGH'}
+
+        if context.scene.factorio.should_cancel_rendering:
+            context.window_manager.event_timer_remove(self.timer)
+            return {"FINISHED"}
 
         obj = context.scene.factorio.active_object
         scene = context.scene
@@ -44,13 +57,14 @@ class FactorioUtils_RenderAnimations(MenuOperator):
                 obj.animation_data.nla_tracks.active = nla_tracks[self.current_nla_track_idx]
                 bpy.ops.factorio.render_one_animation('INVOKE_DEFAULT')
                 self.current_nla_track_idx+=1
-            return {'RUNNING_MODAL'}
+            return {'PASS_THROUGH'}
         else:
             context.window_manager.event_timer_remove(self.timer)
             return {"FINISHED"}
-        return {'RUNNING_MODAL'}
+        return {'PASS_THROUGH'}
 
     def invoke(self, context, event):
+        context.scene.factorio.should_cancel_rendering = False
         context.window_manager.modal_handler_add(self)
         self.timer = context.window_manager.event_timer_add(0.05, window=context.window)
         
@@ -164,11 +178,16 @@ class FactorioUtils_RenderOneAnimation(MenuOperator):
             spritesheet.save(filepath)
 
     def modal(self, context, event):
-        if event.type != "TIMER": return {'RUNNING_MODAL'}
+        if event.type != "TIMER": return {'PASS_THROUGH'}
+
+        if context.scene.factorio.should_cancel_rendering:
+            progress_bars.render_progress.update(100, "Canceled")
+            self.end_rendering(context)
+            return {'FINISHED'}
 
         if self.wait_state<1:
             self.wait_state+=1
-            return {'RUNNING_MODAL'}
+            return {'PASS_THROUGH'}
         else:
             self.wait_state = 0
         
@@ -182,7 +201,7 @@ class FactorioUtils_RenderOneAnimation(MenuOperator):
 
                 self.current_frame += 1
                 self.render_progress += 1
-                return {'RUNNING_MODAL'}
+                return {'PASS_THROUGH'}
 
             else:
                 self.current_frame = self.start_frame
@@ -191,7 +210,7 @@ class FactorioUtils_RenderOneAnimation(MenuOperator):
                 if self.current_direction==self.directions_count:
                     progress_bars.render_progress.update(99, "Saving")
                 
-            return {'RUNNING_MODAL'}
+            return {'PASS_THROUGH'}
 
         elif not self.done:
             progress_bars.render_progress.update(
@@ -199,17 +218,14 @@ class FactorioUtils_RenderOneAnimation(MenuOperator):
                 f"Saving spritesheet \"{self.current_direction}-{self.current_frame}\"")
             self.save_spritesheet(context)
             self.done = True
-            return {'RUNNING_MODAL'}
+            return {'PASS_THROUGH'}
 
         else:
             progress_bars.render_progress.update(100, "Done")
-            context.window_manager.event_timer_remove(self.timer)
-
             self.end_rendering(context)
-
             return {'FINISHED'}
 
-        return {'RUNNING_MODAL'}
+        return {'PASS_THROUGH'}
 
     def start_rendering(self, context):
         if context.scene.factorio.render_hr_versions:
@@ -222,6 +238,7 @@ class FactorioUtils_RenderOneAnimation(MenuOperator):
         self.tmp_dir.mkdir(parents=True, exist_ok=True)
 
     def end_rendering(self, context):
+        context.window_manager.event_timer_remove(self.timer)
         context.scene.render.resolution_percentage = 100
         self.current_direction = 0
         self.current_frame = self.start_frame
@@ -239,6 +256,8 @@ class FactorioUtils_RenderOneAnimation(MenuOperator):
             shutil.rmtree(self.tmp_dir)
         
     def invoke(self, context, event):
+        context.scene.factorio.should_cancel_rendering = False
+
         self.wait_state = 0
         self.rotator = context.view_layer.objects.get(rotator_name)
         self.rotator_start_z_angle = self.rotator.rotation_euler[2]
