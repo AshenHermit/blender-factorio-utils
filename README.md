@@ -2,7 +2,7 @@
 
 A small addon for *Blender* that simplifies the creation of graphics for the game *Factorio*.
 
-<div style="height:128px;"><img src="pages/pics/factorio_utils.gif"/></div>
+<div style="height:128px;"><img height="128" src="pages/pics/factorio_utils.gif"/></div>
 
 ## Features
 * Quick scene setup:
@@ -19,15 +19,15 @@ A small addon for *Blender* that simplifies the creation of graphics for the gam
 
 ## Controls places
 
-<div style="height:128px;"><img src="pages/pics/screnshot.jpg"/></div>
+<div><img height="128" src="pages/pics/screnshot.jpg"/></div>
 
 just screenshot
 
 * **3D View side panel**
-    <div style="height:128px;"><img src="pages/pics/side_panel.jpg"/></div>
+    <div><img height="128" src="pages/pics/side_panel.jpg"/></div>
 
   * **Setup Scene** - Executes all scene setup operators that can be found in the **Object** tab:  
-  (rows under "Setup Scene"): <div style="height:128px;"><img src="pages/pics/3dview_object_menu.jpg"/></div>
+  (rows under "Setup Scene"): <div><img height="128" src="pages/pics/3dview_object_menu.jpg"/></div>
 
   * **Options**
     * **Main object** - The object whose animations are being rendered.
@@ -38,28 +38,23 @@ just screenshot
     * **Output file** - Path to the folder and name of the future spritesheet.
     * **Render object animations** - render all object animations into spritesheets, as if they individually rendered here, with this button  
     (In the **NLA Editor** side bar):
-      <div style="height:128px;"><img src="pages/pics/animation_side_panel.jpg"/></div>  
+      <div><img height="128" src="pages/pics/animation_side_panel.jpg"/></div>  
     
     Render examples:
-    <div style="display: flex;">
-    <figure>
-    <img src="pages/pics/cycles_1_direction_render.jpg" alt="cycles, 1 direction" style="height:128px;">
-    <figcaption align = "center"><b>cycles, 1 direction</b></figcaption>
-    </figure>
-    <figure>
-    <img src="pages/pics/eevee_4_directions_render.jpg" alt="eevee, 4 directions" style="height:128px;">
-    <figcaption align = "center"><b>eevee, 4 directions</b></figcaption>
-    </figure>
-    </div>
+
+    <p float="left">
+    <img src="pages/pics/cycles_1_direction_render.jpg" title="cycles, 1 direction" height="128">
+    <img src="pages/pics/eevee_4_directions_render.jpg" title="eevee, 4 directions" height="128">
+    </p>
 
 * **Text Editor > Text menu**
-  <div style="height:128px;"><img src="pages/pics/text_editor_menu.jpg"/></div>
+  <div><img height="128" src="pages/pics/text_editor_menu.jpg"/></div>
   Here you can generate extremply simple animation data for some entity registration lua code.  
   What it looks like:
-  <div style="height:128px;"><img src="pages/pics/animation_data_code.jpg"/></div>
+  <div><img height="128" src="pages/pics/animation_data_code.jpg"/></div>
   
 **checking in game**
-<div style="height:128px;"><img src="pages/pics/in_game.gif"/></div>
+<div><img height="128" src="pages/pics/in_game.gif"/></div>
 
 ## Ideas
 * Maybe should be added the ablility to define *boxes* properties like *"collision_box"*, *"selection_box"*, *"drawing_box"*, by changing sizes of some planes. That would be cool.
