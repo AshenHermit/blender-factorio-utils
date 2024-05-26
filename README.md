@@ -13,7 +13,7 @@ A small addon for *Blender* that simplifies the creation of graphics for the gam
 * Generation of block of lua code with entity animation data.
 
 ## Installation
-* Download repo as zip and install it into blender
+* Download latest [release](/releases/latest) and install it into blender
 * **OR** clone repo into `~/AppData/Blender Foundation/Blender/version/scripts/addons/`
 * Activate it in preferences
 
