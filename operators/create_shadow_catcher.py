@@ -42,7 +42,7 @@ class FactorioUtils_CreateShadowCatcher(MenuOperator):
         mat.node_tree.links.new(bsdf.outputs[0], material_output.inputs[0])
         bsdf.inputs['Base Color'].default_value.foreach_set([0,0,0,1])
         bsdf.inputs['Roughness'].default_value = 1.0
-        bsdf.inputs['Specular'].default_value = 0.0
+        bsdf.inputs['Specular IOR Level'].default_value = 0.0
 
         # Color Ramp
         ramp = mat.node_tree.nodes.new('ShaderNodeValToRGB')
@@ -70,7 +70,7 @@ class FactorioUtils_CreateShadowCatcher(MenuOperator):
         mat.node_tree.links.new(bsdf.outputs[0], material_output.inputs[0])
         bsdf.inputs['Base Color'].default_value.foreach_set([1,1,1,1])
         bsdf.inputs['Roughness'].default_value = 1.0
-        bsdf.inputs['Specular'].default_value = 0.0
+        bsdf.inputs['Specular IOR Level'].default_value = 0.0
         bsdf.inputs['Alpha'].default_value = 0.8
 
         return mat

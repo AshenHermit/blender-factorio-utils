@@ -18,6 +18,9 @@ class FactorioUtils_SetupScene(MenuOperator):
     menu_group="setup_all"
 
     def execute(self, context):
+        if bpy.context.mode != 'OBJECT':
+            bpy.ops.object.mode_set(mode='OBJECT')
+
         bpy.ops.object.select_all(action='DESELECT')
 
         rotator = utils_rotator.get_rotator(context)

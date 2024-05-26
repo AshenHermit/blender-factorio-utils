@@ -48,6 +48,10 @@ class FactorioUtils_SceneProps(bpy.types.PropertyGroup):
         name="Render HR versions",
         description="Render hight resolution versions",
     )
+    render_in_one_line: bpy.props.BoolProperty(
+        name="Render all in one line",
+        description="Render all in one line of frames",
+    )
     hr_scale: bpy.props.FloatProperty(
         name="HR scale",
         description="Scale of hight resolution versions",
@@ -99,6 +103,7 @@ class FACTORIOUTILS_PT_SidePanel(bpy.types.Panel):
         col.separator()
         s_label(text="Options")
         col.prop(scn.factorio, "active_object")
+        col.prop(scn.factorio, "render_in_one_line")
         col.prop(scn.factorio, "directions_count")
         col.prop(scn.factorio, "render_hr_versions")
         if scn.factorio.render_hr_versions:

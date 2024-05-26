@@ -73,11 +73,18 @@ class FactorioUtils_PrintAnimationData(MenuOperator):
         start_frame = min([s.frame_start for s in nla_track.strips])
         end_frame = max([s.frame_end for s in nla_track.strips])
         frames_count = int(end_frame-start_frame)
-        line_length = math.ceil(math.sqrt(frames_count))
+        total_frames_count = frames_count * context.scene.factorio.directions_count
+
+        line_length = math.ceil(math.sqrt(total_frames_count))
+        if context.scene.factorio.render_in_one_line:
+            line_length = total_frames_count
+        
         animation_speed = bpy.context.scene.render.fps/60.0
+        direction_count = context.scene.factorio.directions_count
 
         in_game_scale = 32.0 / (max(frame_size[0], frame_size[1]) / bpy.context.scene.camera.data.ortho_scale)
 
+        self.wl('--#-- for animation / rotated animation - https://lua-api.factorio.com/1.1.107/types/RotatedAnimation.html')
         self.wl('{')
         self.indent+=1
         self.wl(f'filename = {get_sprite_path()},')
@@ -87,6 +94,7 @@ class FactorioUtils_PrintAnimationData(MenuOperator):
         self.wl('shift = { 0, 0 },')
         self.wl(f'frame_count = {frames_count},')
         self.wl(f'line_length = {line_length},')
+        if(direction_count>1): self.wl(f'direction_count = {direction_count},')
         self.wl(f'animation_speed = {animation_speed},')
         self.wl(f'scale = {in_game_scale},')
 
@@ -100,12 +108,27 @@ class FactorioUtils_PrintAnimationData(MenuOperator):
             self.wl('shift = { 0, 0 },')
             self.wl(f'frame_count = {frames_count},')
             self.wl(f'line_length = {line_length},')
+            if(direction_count>1): self.wl(f'direction_count = {direction_count},')
             self.wl(f'animation_speed = {animation_speed},')
             self.wl(f'scale = {in_game_scale} / {hr_scale},')
             self.indent-=1
             self.wl('},')
-
+    
         self.indent-=1
+        self.wl('},')
+        self.wl('')
+
+        if(direction_count>1):
+            self.wl('--#-- for SpriteNWaySheet - needs "Render in one line" turned on - https://lua-api.factorio.com/1.1.107/types/SpriteNWaySheet.html')
+            self.wl('sheet = {')
+            self.indent+=1
+            self.wl(f'filename = {get_sprite_path()},')
+            self.wl(f'frames = {direction_count},')
+            self.wl(f'width = {frame_size[0]},')
+            self.wl(f'height = {frame_size[1]},')
+            self.wl(f'scale = {in_game_scale},')
+            self.wl('shift = { 0, 0 },')
+            self.indent-=1
         self.wl('},')
 
         self.text = self.text.strip()

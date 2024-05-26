@@ -30,7 +30,7 @@ for collection in [bpy.app.handlers.depsgraph_update_post, bpy.app.handlers.load
 bl_info = {
     "name": "Factorio Utils",
     "author": "Ashen Hermit",
-    "version": (0, 1),
+    "version": (0, 8),
     "blender": (3, 1, 0),
     "location": "View3D > Tools > Factorio Utils",
     "description": "A set of workflow tools to export graphics to Factorio game.",

@@ -147,24 +147,40 @@ class FactorioUtils_RenderOneAnimation(MenuOperator):
         self.animation.frames.append(frame)
 
         # self.nla_track.is_solo = False
+    def compose_spritesheet(self, x_capacity, y_capacity, frames):
+        image_size = frames[0].size
+        sheet_image = Image.new('RGBA', (x_capacity*image_size[0], y_capacity*image_size[1]), (0, 0, 0, 0))
 
-    def make_spritesheet(self, animation:AnimationStruct):
-        if len(animation.frames)==0: return None
-
-        image_size = animation.frames[0].size
-        sheet_x_cap = math.ceil(math.sqrt(len(animation.frames)))
-        sheet_y_cap = math.ceil(len(animation.frames)/sheet_x_cap)
-        sheet_image = Image.new('RGBA', (sheet_x_cap*image_size[0], sheet_y_cap*image_size[1]), (0, 0, 0, 0))
-
-        for i, frame in enumerate(animation.frames):
-            x = image_size[0] * (i % sheet_x_cap)
-            y = image_size[1] * (i // sheet_x_cap)
+        for i, frame in enumerate(frames):
+            x = image_size[0] * (i % x_capacity)
+            y = image_size[1] * (i // x_capacity)
             sheet_image.paste(frame, (x, y))
 
         return sheet_image
+    
+    def make_spritesheet_line(self, animation:AnimationStruct):
+        if len(animation.frames)==0: return None
+
+        sheet_x_cap = len(animation.frames)
+        sheet_y_cap = 1
+
+        return self.compose_spritesheet(sheet_x_cap, sheet_y_cap, animation.frames)
+    
+    def make_spritesheet(self, animation:AnimationStruct):
+        if len(animation.frames)==0: return None
+
+        sheet_x_cap = math.ceil(math.sqrt(len(animation.frames)))
+        sheet_y_cap = math.ceil(len(animation.frames)/sheet_x_cap)
+
+        return self.compose_spritesheet(sheet_x_cap, sheet_y_cap, animation.frames)
 
     def save_spritesheet(self, context):
-        spritesheet = self.make_spritesheet(self.animation)
+        spritesheet = None
+        if context.scene.factorio.render_in_one_line:
+            spritesheet = self.make_spritesheet_line(self.animation)
+        else:
+            spritesheet = self.make_spritesheet(self.animation)
+        
         if spritesheet is not None:
             progress_bars.render_progress.update(99, "Saving")
 

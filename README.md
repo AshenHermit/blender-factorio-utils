@@ -1,4 +1,4 @@
-# Factorio Utils v0.7
+# Factorio Utils v0.8
 
 A small addon for *Blender* that simplifies the creation of graphics for the game *Factorio*.
 
