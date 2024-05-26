@@ -13,7 +13,7 @@ A small addon for *Blender* that simplifies the creation of graphics for the gam
 * Generation of block of lua code with entity animation data.
 
 ## Installation
-* Download latest [release](/releases/latest) and install it into blender
+* Download latest [release](https://github.com/AshenHermit/blender-factorio-utils/releases/latest) and install it into blender
 * **OR** clone repo into `~/AppData/Blender Foundation/Blender/version/scripts/addons/`
 * Activate it in preferences
 
